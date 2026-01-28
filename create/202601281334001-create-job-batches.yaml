@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-job-batches
+      author: gevorg
+      changes:
+        - createTable:
+            tableName: job_batches
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false');
+              - column:
+                  name: pending_jobs
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: failed_jobs
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: failed_job_ids
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: options
+                  type: TEXT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: cancelled_at
+                  type: INT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: finished_at
+                  type: INT
+                  constraints:
+                    nullable: true
+      rollback:
+        - dropTable:
+            tableName: job_batches

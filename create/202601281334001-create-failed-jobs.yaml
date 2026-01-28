@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-failed-jobs
+      author: gevorg
+      changes:
+        - createTable:
+            tableName: failed_jobs
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: uuid
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: connection
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: queue
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payload
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: exception
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: failed_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+        - createIndex:
+            indexName: idx_failed_jobs_uuid
+            tableName: failed_jobs
+            columns:
+              - column:
+                  name: uuid
+      rollback:
+        - dropIndex:
+            indexName: idx_failed_jobs_uuid
+            tableName: failed_jobs
+        - dropTable:
+            tableName: failed_jobs

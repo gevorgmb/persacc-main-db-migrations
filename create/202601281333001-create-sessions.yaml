@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-sessions
+      author: gevorg
+      changes:
+        - createTable:
+            tableName: sessions
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: ip_address
+                  type: VARCHAR(45)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: user_agent
+                  type: TEXT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: payload
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_activity
+                  type: INT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_sessions_user
+            baseTableName: sessions
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+      rollback:
+        - dropTable:
+            tableName: sessions

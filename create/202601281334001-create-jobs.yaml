@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-jobs
+      author: gevorg
+      changes:
+        - createTable:
+            tableName: jobs
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: queue
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payload
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: attempts
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reserved_at
+                  type: INT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: available_at
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: INT
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_jobs_queue
+            tableName: jobs
+            columns:
+              - column:
+                  name: queue
+      rollback:
+        - dropIndex:
+            indexName: idx_jobs_queue
+            tableName: jobs
+        - dropTable:
+            tableName: jobs
