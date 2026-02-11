@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 090-update-sessions-pk-varchar
+      author: gevorg
+      changes:
+        - dropPrimaryKey:
+            tableName: sessions
+        - dropColumn:
+            tableName: sessions
+            columnName: id
+        - addColumn:
+            tableName: sessions
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+      rollback:
+        - dropPrimaryKey:
+            tableName: sessions
+        - dropColumn:
+            tableName: sessions
+            columnName: id
+        - addColumn:
+            tableName: sessions
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
