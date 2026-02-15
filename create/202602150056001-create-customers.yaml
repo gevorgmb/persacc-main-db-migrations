@@ -77,13 +77,14 @@ databaseChangeLog:
               - column:
                   name: updated_at
                   type: TIMESTAMP
+                  defaultValueComputed: NOW()
                   constraints:
                     nullable: false
               - column:
                   name: deleted_at
                   type: TIMESTAMP
                   constraints:
-                    nullable: false
+                    nullable: true
       rollback:
         - dropTable:
-            tableName: customer
+            tableName: customers
