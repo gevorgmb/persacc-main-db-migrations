@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-update-users
+      author: gevorg
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+
+        - createIndex:
+            indexName: idx_users_role_id
+            tableName: users
+            columns:
+              column:
+                name: role_id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_users_roles
+            baseTableName: users
+            baseColumnNames: role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: users
+            constraintName: fk_users_roles
+
+        - dropIndex:
+            indexName: idx_users_role_id
+            tableName: users
+
+        - dropColumn:
+            tableName: users
+            column: role_id
+
+        - dropColumn:
+            tableName: users
+            column: created_at
+
+        - dropColumn:
+            tableName: users
+            column: updated_at
+
+        - dropColumn:
+            tableName: users
+            column: deleted_at
