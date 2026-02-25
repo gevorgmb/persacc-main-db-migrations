@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-update-customers
+      author: gevorg
+      changes:
+        - modifyDataType:
+            tableName: customers
+            columnName: user_id
+            newDataType: BIGINT
+
+        - createIndex:
+            indexName: idx_customers_user_id
+            tableName: customers
+            columns:
+              column:
+                name: user_id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_customers_users
+            baseTableName: customers
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: customers
+            constraintName: fk_customers_users
+
+        - dropIndex:
+            indexName: idx_customers_user_id
+            tableName: customers
+
+        - modifyDataType:
+            tableName: customers
+            columnName: user_id
+            newDataType: VARCHAR(255)
