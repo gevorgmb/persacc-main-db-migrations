@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-update-users
+      author: gevorg
+      changes:
+        - modifyDataType:
+            tableName: users
+            columnName: uuid
+            newDataType: VARCHAR(36)
+
+      rollback:
+        - modifyDataType:
+            tableName: users
+            columnName: uuid
+            newDataType: BIGINT
