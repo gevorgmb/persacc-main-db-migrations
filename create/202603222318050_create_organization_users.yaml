@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-organization-users
+      author: gevorg
+      changes:
+        - createTable:
+            tableName: organization_users
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: organization_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+        - addForeignKeyConstraint:
+            constraintName: fk_organization_users_organization
+            baseTableName: organization_customers
+            baseColumnNames: organization_id
+            referencedTableName: organizations
+            referencedColumnNames: id
+            onDelete: RESTRICT
+            onUpdate: CASCADE
+        - addForeignKeyConstraint:
+            constraintName: fk_organizations_users_user
+            baseTableName: organization_users
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: RESTRICT
+            onUpdate: CASCADE
+        - addUniqueConstraint:
+            constraintName: uq_organizations_users_ids
+            tableName: organization_users
+            columnNames: organization_id, user_id
+      rollback:
+        - dropTable:
+            tableName: organization_users
