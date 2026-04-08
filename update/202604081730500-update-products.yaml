@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-update-products
+      author: gevorg
+      changes:
+        - addColumn:
+            tableName: products
+            columns:
+              - column:
+                  name: category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: vendor_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: vendor_product_code
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+
+        - addForeignKeyConstraint:
+            constraintName: fk_products_product_categories
+            baseTableName: products
+            baseColumnNames: category_id
+            referencedTableName: product_categories
+            referencedColumnNames: id
+            onDelete: SET NULL
+            onUpdate: CASCADE
+        - addForeignKeyConstraint:
+            constraintName: fk_products_vendors
+            baseTableName: products
+            baseColumnNames: vendor_id
+            referencedTableName: vendors
+            referencedColumnNames: id
+            onDelete: SET NULL
+            onUpdate: CASCADE
+
+      rollback:
+        - dropColumn:
+            tableName: products
+            columnName: vendor_product_code
+        - dropColumn:
+            tableName: products
+            columnName: vendor_id
+        - dropColumn:
+            tableName: products
+            columnName: category_id
